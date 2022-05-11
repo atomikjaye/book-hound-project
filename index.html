@@ -15,52 +15,71 @@
 
   <!-- <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.4/build/98.css" /> -->
 
-  <div class="window" style="margin: 32px; width: 300px">
-    <div class="title-bar">
-      <div class="title-bar-text">
-        📚 Book Hound 🐶
-      </div>
+  <section id="bookshelf-Section">
+    <!-- BOOK SHELF -->
 
-      <div class="title-bar-controls">
-        <button aria-label="Minimize"></button>
-        <button aria-label="Maximize"></button>
-        <button aria-label="Close"></button>
+    <div class="window" style="margin: 32px; width: 300px">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          📔 Book Shelf
+        </div>
+      </div>
+      <div class="window-body">
+        <ul id="bookShelf" class="tree-view">
+          Add a book you currently are reading
+        </ul>
       </div>
     </div>
-    <div class="window-body">
-      <p>What would you like to read?</p>
-      <form action="">
-        <div class="field-row-stacked" style="width: ; justify-content: center;">
-          <label for="bookSearch">Search for a book</label>
-          <input id="bookSearch" type="text" />
+  </section>
+
+  <section id="search-Section">
+    <div class="window" style="margin: 32px; width: 300px">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          📚 Book Hound 🐶
         </div>
 
-        <section class="field-row" style="justify-content: center">
-          <button>Search</button>
-      </form>
-      <!-- <button>Cancel</button> -->
-      </section>
-    </div>
-  </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p>What would you like to read?</p>
+        <form action="">
+          <div class="field-row-stacked" style="width: ; justify-content: center;">
+            <label for="bookSearch">Search for a book</label>
+            <input id="bookSearch" type="text" />
+          </div>
 
-
-
-
-
-
-
-  <div class="window" style="margin: 32px; width: 300px">
-    <div class="title-bar">
-      <div class="title-bar-text">
-        🔎 Search Results
+          <div class="field-row" style="justify-content: center">
+            <button>Search</button>
+          </div>
+        </form>
+        <!-- <button>Cancel</button> -->
       </div>
     </div>
-    <div class="window-body">
-      <ul id="booksList" class="tree-view">
+  </section>
 
-      </ul>
+  <section id="results-Section">
+    <div class="window" style="margin: 32px; width: 300px">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          🔎 Search Results
+        </div>
+      </div>
+      <div class="window-body">
+        <ul id="booksList" class="tree-view">
+          <li>Search for Results</li>
+        </ul>
+      </div>
     </div>
-  </div>
+
+    <div class="imagePopUp hidden">
+      <img src="">
+    </div>
+  </section>
 
   <!-- <main class="container">
     <header>
