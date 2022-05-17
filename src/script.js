@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Grab book description from item object (each individual book) and 
         // assign it to bookDescription
         let bookDescription = item.volumeInfo.description
+        let pageCount = item.volumeInfo.pageCount
         // If there is no description, we replace with n/a
         if (bookDescription == undefined) {
           bookDescription = 'N/A'
@@ -60,6 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
           // otherwise we include a description under 60 characters.
           bookDescription = (item.volumeInfo.description.length > 60) ? item.volumeInfo.description.substr(0, 60) + "..." : item.volumeInfo.description
         }
+        // if there is no page Count, display N/A
+        if (pageCount == undefined) {
+          pageCount = 'N/A'
+        }
+
         //Now we build our searchResultsListDisplay using 'illegal' innerHTML
         searchResultsListDisplay.innerHTML += `
         <li class="details">
@@ -75,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <b>Summary: </b> <span class="bookDescription">${bookDescription}</span>
           </li>
           <li>
-            <b>Page Count: </b> <span class="bookPageCount">${item.volumeInfo.pageCount}</span>
+            <b>Page Count: </b> <span class="bookPageCount">${pageCount}</span>
           </li>
           <li>
           
@@ -86,6 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </details >
         </li >
         `
+        // If page Count does not exist. set button to disabled
+        if (pageCount === 'N/A') {
+          // select all the buttons currently in te searchResultsList, and using the index in the for loop,
+          // add the disabled attribute to prevent clicking
+          document.querySelectorAll(".addToShelf")[i].disabled = true
+        }
       }
     }
 
@@ -156,15 +168,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirmAnswer == true) {
       bookShelf.innerHTML = `
         <div class="books-in-shelf">
-         <img src="${element.querySelector('.bookImg').src}">
-         <div class="bookInfo">
-         <strong>Title:</strong> ${element.querySelector('.bookTitle').innerText}<br>
-         <strong>Description:</strong> ${element.querySelector('.bookDescription').innerText}<br>
-         <strong>Page Count:</strong> <span class="bookPageCount">${element.querySelector('.bookPageCount').innerText}</span><br>
-         <strong></strong>
-         <button id="bookSchedule">Schedule</button>
-         <button id="record">record</button>
-         </div>
+          <img src="${element.querySelector('.bookImg').src}">
+          <div class="bookInfo">
+          <strong>Title:</strong> ${element.querySelector('.bookTitle').innerText}<br>
+          <strong>Description:</strong> ${element.querySelector('.bookDescription').innerText}<br>
+          <strong>Page Count:</strong> <span class="bookPageCount">${element.querySelector('.bookPageCount').innerText}</span><br>
+          <strong></strong>
+          <button id="bookSchedule">Schedule</button>
+          <button id="record">Record</button>
+          </div>
         </div>`
       // below we are selecting buttons on bookshelf and adding even listeners
       let bookScheduleBtn = document.getElementById('bookSchedule')
