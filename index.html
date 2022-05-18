@@ -15,24 +15,34 @@
 
   <!-- <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.4/build/98.css" /> -->
 
-  <section id="bookshelf-Section">
-    <!-- BOOK SHELF -->
-
+  <section id="welcome-Section">
     <div class="window" style="margin: 32px; width: 300px">
       <div class="title-bar">
         <div class="title-bar-text">
-          📔 Currently Reading
+          📚 Book Hound 🐶
+        </div>
+
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
         </div>
       </div>
       <div class="window-body">
-        <div id="bookShelf">
-          Add a book you currently are reading
-        </div>
-      </div>
-      <div class="status-bar">
-        <p class="status-bar-field"><strong id="days-to-go"></strong> Days to go</p>
-        <p class="status-bar-field">📖 <span id="totalPagesRead">0</span></p>
-        <p class="status-bar-field">Reading Progress: <span id="readingProgress"></span>%</p>
+        <h4>Welcome to 📚 Book Hound 🐶</h2>
+
+          - Below, search for a book you'd like to read <br><br>
+          - You can click "Preview Book"
+          to view the book in pdf (when available) on Google Books.<br><br>
+          - You can click "Read Now" to add to your bookshelf.<br><br>
+          - Click the heart to add to your favorites.<br><br>
+          <div class="field-row" style="justify-content: center">
+            <button id="signUpPop">Sign Up</button>
+            <button id="loginPop">Login</button>
+          </div>
+
+
+
       </div>
     </div>
   </section>
@@ -41,7 +51,7 @@
     <div class="window" style="margin: 32px; width: 300px">
       <div class="title-bar">
         <div class="title-bar-text">
-          📚 Book Hound 🐶
+          📖 Book Hound Search
         </div>
 
         <div class="title-bar-controls">
@@ -62,12 +72,33 @@
             <button>Search</button>
           </div>
         </form>
-        <!-- <button>Cancel</button> -->
       </div>
     </div>
   </section>
 
-  <section id="results-Section">
+  <section id="bookshelf-Section">
+    <!-- BOOK SHELF -->
+
+    <div class="window" style="margin: 32px; width: 300px">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          📔 <span id="currUser"></span> Currently Reading
+        </div>
+      </div>
+      <div class="window-body">
+        <div id="bookShelf">
+          Add a book you currently are reading
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field"><strong id="days-to-go"></strong> Days to go</p>
+        <p class="status-bar-field">📖 <span id="totalPagesRead">0</span></p>
+        <p class="status-bar-field">Reading Progress: <span id="readingProgress"></span>%</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="results-Section" class="hidden">
     <div class="window" style="margin: 32px; width: 300px">
       <div class="title-bar">
         <div class="title-bar-text">
@@ -84,6 +115,62 @@
 
     <div class="imagePopUp hidden">
       <img src="">
+    </div>
+  </section>
+
+
+  <section id="login-Section" class="hidden">
+    <div class="window" style="margin: 32px; width: 300px">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          👋🏽 Login
+        </div>
+      </div>
+      <div class="window-body">
+        <form id="loginForm" action="">
+          <div class=" field-row-stacked">
+            <label for="loginUsername">Username</label>
+            <input id="loginUsername" autocomplete="username" type="text" />
+          </div>
+          <div class="field-row-stacked">
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" autocomplete="current-password" type="password" />
+          </div>
+          <div class="field-row" style="justify-content: center">
+            <button type="submit">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="signUp-Section" class="hidden">
+    <div class="window" style="margin: 32px; width: 300px">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          ✅ Sign Up
+        </div>
+      </div>
+      <div class="window-body">
+        <form id="signUpForm" action="">
+          <div class="field-row-stacked">
+            Sign up for an account at Book Hound
+          </div>
+
+          <div class="field-row-stacked">
+            <label for="signUpUsername">Username</label>
+            <input id="signUpUsername" type="text" />
+          </div>
+          <div class="field-row-stacked">
+            <label for="signUpPassword">Password</label>
+            <input id="signUpPassword" type="password" />
+          </div>
+          <div class="field-row" style="justify-content: center">
+            <button type="submit">Sign Up</button>
+          </div>
+          <p id="welcome"></p>
+        </form>
+      </div>
     </div>
   </section>
 

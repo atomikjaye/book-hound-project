@@ -95,5 +95,19 @@ ul.tree-view li.details summary::marker {
 }
 
 .hidden {
-  display: none;
+  /* I know this is 'illegal' */
+  display: none !important;
+}
+
+button.favorite {
+  min-width: 20px;
+  font-size: 9px;
+}
+
+button.favorite.faved {
+  color: brown;
+}
+
+h4 {
+  font-size: 16px;
 }

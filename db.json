@@ -1,0 +1,21 @@
+{
+  "bookShelf": [
+    {
+      "id": 1,
+      "username": "test",
+      "password": "password",
+      "favoriteBooks": [
+        {
+          "bookTitle": "Eloquent JavaScript, 3rd Edition",
+          "bookPageCount": 472
+        }
+      ],
+      "booksRead": [
+        {
+          "bookTitle": "JavaScript: The Good Parts",
+          "bookPageCount": 172
+        }
+      ]
+    }
+  ]
+}

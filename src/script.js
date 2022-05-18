@@ -2,6 +2,9 @@
 //https://codeburst.io/10-amazing-and-retro-css-kits-24612169f550
 
 let DEBUG = false
+let serverURL = 'http://localhost:3000/bookShelf'
+let currLoggedUser = ""
+let currLoggedUserId = ""
 
 document.addEventListener('DOMContentLoaded', () => {
   // selecting form from index.html and assigning it to form variable
@@ -33,11 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleResponse(data) {
     // selecting currently reading bookshelf for future use
     let bookShelf = document.getElementById("bookShelf")
+    let searchWindow = document.getElementById("results-Section")
     //selecting search results book list
     let searchResultsListDisplay = document.getElementById("searchResultsList")
     // searchResultsListDisplay's innerHTML is assigned to empty string 
     //immediatly after a search to clear the list
     searchResultsListDisplay.innerHTML = ""
+    searchWindow.classList.remove('hidden')
     //TODO: Make a button that expands or collapses all items
     // We are running a loop on the data.items array
     // if there is no item in the array, we edit searchResultsListDisplay to show no books.
@@ -54,17 +59,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // assign it to bookDescription
         let bookDescription = item.volumeInfo.description
         let pageCount = item.volumeInfo.pageCount
+        let thumbnail = (item.volumeInfo.imageLinks) ? item.volumeInfo.imageLinks.smallThumbnail : 'https://placeholder.pics/svg/100x200'
         // If there is no description, we replace with n/a
-        if (bookDescription == undefined) {
+        if (bookDescription === undefined) {
           bookDescription = 'N/A'
         } else {
           // otherwise we include a description under 60 characters.
           bookDescription = (item.volumeInfo.description.length > 60) ? item.volumeInfo.description.substr(0, 60) + "..." : item.volumeInfo.description
         }
         // if there is no page Count, display N/A
-        if (pageCount == undefined) {
+        if (pageCount === undefined) {
           pageCount = 'N/A'
         }
+
 
         //Now we build our searchResultsListDisplay using 'illegal' innerHTML
         searchResultsListDisplay.innerHTML += `
@@ -72,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <details class="bookInfo">
             <summary>
             <span class="popUp">
-            <img src="${item.volumeInfo.imageLinks.smallThumbnail}" class="bookImg">
+            <img src="${thumbnail}" class="bookImg">
             <strong class="bookTitle">${item.volumeInfo.title}</strong> by ${item.volumeInfo.authors}
             </span>
             </summary >
@@ -108,6 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
     addToShelfBtns.forEach(addToShelfBtn => {
       addToShelfBtn.addEventListener('click', addToBookShelf)
     })
+
+    // add Listeners fo Favorite Buttons
+    let favBtns = document.querySelectorAll(".favorite")
+    favBtns.forEach(favBtn => favBtn.addEventListener('click', addToFavs))
 
     // IMAGE HOVER CODE //
     // select image to be viewed in .popUp window
@@ -154,6 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //ReadNow Buttons addToBookShelf Button Functionality
   function addToBookShelf(e) {
+    let bookShelfSection = document.getElementById('bookshelf-Section')
+    bookShelfSection.classList.remove('hidden')
+
     // resets progress display once book is added
     let totalPagesReadDisplay = document.getElementById('totalPagesRead')
     totalPagesReadDisplay.textContent = 0
@@ -187,6 +201,43 @@ document.addEventListener('DOMContentLoaded', () => {
       recordBtn.addEventListener('click', recordRead)
     }
   }
+
+  // // Favorite Functionality
+  // function addToFavs(e) {
+  //   let favBtn = e.target
+  //   fetch(`${serverURL}/${currLoggedUserId}`,  {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(newUserObj)
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       let parent = e.target.parentNode.parentNode.parentNode
+  //       // console.log(e.target.parentNode.parentNode.parentNode)
+  //       if (favBtn.classList.contains('faved')) {
+  //         e.target.classList.remove('faved')
+  //         data["favoriteBooks"] = data["favoriteBooks"].filter(book => book.title !== parent.querySelector('.bookTitle'))
+  //         console.log("unfaved", data)
+
+  //       } else {
+  //         e.target.classList.add('faved')
+  //         let favBook = {
+  //           title: parent.querySelector('.bookTitle').textContent,
+  //           image: parent.querySelector('.bookImg').src,
+  //           summary: parent.querySelector('.bookDescription').textContent,
+  //           pageCount: parent.querySelector('.bookPageCount').textContent
+  //         }
+  //         console.log("ELse", data)
+  //         data.favoriteBooks.push(favBook)
+  //         console.log(data["favoriteBooks"])
+  //       }
+
+  //     })
+
+  // }
+
 
   // Here we ask user how many pages they will like to read and schedule a due date/counter 
   function scheduleBook(e) {
@@ -274,5 +325,136 @@ document.addEventListener('DOMContentLoaded', () => {
       // We also update the progress percentage
       readingProgressDisplay.textContent = `${parseInt((parseInt(pagesReadTotal) / totalPages) * 100)}`
     }
+  }
+
+  //select buttons for signup
+  let signUpPop = document.getElementById('signUpPop')
+  let loginPop = document.getElementById('loginPop')
+
+  function toggleCSS(cssStyle, section) {
+    let window = document.querySelector(section)
+    window.classList.toggle(cssStyle)
+  }
+
+  signUpPop.addEventListener('click', (e) => {
+    toggleCSS('hidden', '#signUp-Section')
+  })
+  loginPop.addEventListener('click', (e) => {
+    toggleCSS('hidden', '#login-Section')
+  })
+
+
+  /// FUNCTIONS FOR OTHER PAGES
+  let signUpForm = document.querySelector("#signUpForm")
+  signUpForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let username = document.querySelector("#signUpForm").signUpUsername.value.toLowerCase()
+    let password = document.querySelector("#signUpForm").signUpPassword.value
+    // after we recieve username and password
+    //TODO: we wanr to check that it is valid
+    if (username !== '' && password !== '') {
+      // form it to an object
+      let newUserObj = {
+        username,
+        password,
+        favoriteBooks: [],
+        booksRead: []
+      }
+      // pass user to signup Func
+      signUp(newUserObj)
+
+    } else {
+      alert('Make sure you enter your information')
+    }
+  })
+
+  function signUp(newUserObj) {
+    // Here we run a GET request to the server to pull the current users
+    fetch(serverURL)
+      .then(res => res.json())
+      .then(data => {
+        // int the data array, we are looking to see if the newUserObj.username
+        // is equal to any username already in the server
+        if (data.find((user) => user.username === newUserObj.username)) {
+          alert('user Already exists')
+        } else {
+          // if there is no user, a new user is created
+          fetch(serverURL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUserObj)
+          })
+            .then(res => res.json())
+            .then(newUser => {
+              // select the #welcome ptag on page if any
+              let welcome = document.querySelector('#welcome')
+              // reset p tag and add new user
+              welcome.textContent = ''
+              welcome.textContent = `Thank you for signing up, ${newUser.username}!`
+
+              console.log("New User Created", newUser)
+              console.log(welcome)
+              // p.textContent = ''
+              signUpForm.reset()
+              setTimeout(() => {
+                welcome.remove();
+                let signUpWindow = document.getElementById("signUp-Section")
+                signUpWindow.classList.toggle('hidden')
+              }, 2000);
+            })
+        }
+      })
+  }
+
+  let loginForm = document.querySelector("#loginForm")
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let username = document.querySelector("#loginForm").loginUsername.value
+    let password = document.querySelector("#loginForm").loginPassword.value
+    // after we recieve username and password
+    //TODO: we wanr to check that it is valid
+    if (username !== '' && password !== '') {
+      // form it to an object
+      let loggedUserObj = {
+        username,
+        password,
+      }
+      // pass user to signup Func
+      login(loggedUserObj)
+
+    } else {
+      alert('Make sure you enter your information')
+    }
+  })
+
+  function login(loggedUserObj) {
+    // Here we run a GET request to the server to pull the current users
+    fetch(serverURL)
+      .then(res => res.json())
+      .then(data => {
+        // int the data array, we are looking to see if the newUserObj.username
+        // is equal to any username already in the server
+        if (data.find((user) => user.username === loggedUserObj.username && user.password === loggedUserObj.password)) {
+          currLoggedUser = loggedUserObj.username
+          // retrieve id for loggedin User
+          data.find((user) => {
+            if (user.username === currLoggedUser) {
+              console.log(user.id)
+              currLoggedUserId = user.id
+            }
+          })
+          // currLoggedUserId = loggedUserObj.id
+          //select window title
+          let currReadingTitle = document.getElementById('currUser')
+          currReadingTitle.textContent = currLoggedUser[0].toUpperCase() + currLoggedUser.slice(1) + "'s"
+          toggleCSS('hidden', '#login-Section')
+          loadFavs(currLoggedUser)
+        } else {
+          alert('user does not exist, or password is incorrect')
+          console.log(loggedUserObj.username, loggedUserObj.password)
+        }
+      })
   }
 })
